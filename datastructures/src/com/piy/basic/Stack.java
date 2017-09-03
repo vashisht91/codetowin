@@ -1,4 +1,4 @@
-package com.piy;
+package com.piy.basic;
 
 public class Stack {
 	

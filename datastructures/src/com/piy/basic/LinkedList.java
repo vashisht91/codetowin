@@ -1,4 +1,4 @@
-package com.piy;
+package com.piy.basic;
 
 public class LinkedList {
 	
@@ -30,6 +30,9 @@ public class LinkedList {
 		list.printReverseLinkedListUsingRecursion(list.getRootNode()); System.out.println("");
 		list.reverseLinkedListUsingRecursion(list.getRootNode().getNextNode());
 		list.printLinkedList();
+		System.out.println(list.getSize());
+		list.addAtTheEnd(234);
+		list.printLinkedList();
 	}
 	
 	public LinkedList() {
@@ -51,6 +54,22 @@ public class LinkedList {
 			this.setSize(this.getSize()+1);
 		}
 		return rootNode;
+	}
+	
+	public Node addAtTheEnd(int data) {
+		Node newNode = new Node(data);
+		if(this.getSize() == 0) {
+			rootNode.setNextNode(newNode);
+		}
+		else {
+			Node thisNode = rootNode.getNextNode();
+			while(thisNode.getNextNode().getData()!= 0) {
+				thisNode = thisNode.getNextNode();
+			}
+			thisNode.setNextNode(newNode);
+		}
+		size++;
+		return newNode;
 	}
 	
 	public Node find(int data) {
@@ -116,7 +135,7 @@ public class LinkedList {
 		}
 		else {
 			
-			Node thisNode = rootNode.nextNode;
+			Node thisNode = rootNode.getNextNode();
 			Node prevNode = null;
 			int count = 1;
 			if(position == 1) {
@@ -209,7 +228,7 @@ public class LinkedList {
 
 
 
-	private class Node {
+/*	private class Node {
 		private int data;
 		private Node nextNode;
 		
@@ -241,6 +260,6 @@ public class LinkedList {
 			this.nextNode = nextNode;
 		}
 		
-	}
+	}*/
 
 }
