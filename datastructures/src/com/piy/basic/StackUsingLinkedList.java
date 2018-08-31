@@ -1,53 +1,45 @@
-package com.piy.basic;
+package com.jda.mapping;
 
-public class StackUsingLinkedList {
-	private Node rootNode;
-	private int size;
+public class NodeStack {
+	private int maxSize;
+	private Node[] array;
+	private int top;
 	
-	public static void main(String[] args) {
-		StackUsingLinkedList list = new StackUsingLinkedList();
-		list.push(10);
-		list.push(20);
-		list.push(30);
-		System.out.println(list.getSize());
-		System.out.println(list.peek().getData());
-		System.out.println(list.pop().getData());
-		System.out.println(list.peek().getData());
-		System.out.println(list.getSize());
-	}
-
-	public void push(int data) {
-		if(size == 0) {
-			rootNode = new Node();
-			Node thisNode = new Node(data);
-			rootNode.setNextNode(thisNode);
-		}
-		else {
-			Node thisNode = new Node(data);
-			thisNode.setNextNode(rootNode.getNextNode());
-			rootNode.setNextNode(thisNode);
-		}
-		size++;
+	public NodeStack() {
+		super();
+		this.maxSize = 10;
+		array = (Node[]) new Object[maxSize];
+		top = -1;
 	}
 	
-	public Node pop() {
-		if(size == 0) {
-			return null;
-		}
-		else {
-			Node thisNode = rootNode.getNextNode();
-			rootNode.setNextNode(thisNode.getNextNode());
-			size--;
-			return thisNode;
-		}
+	public NodeStack(int maxSize) {
+		super();
+		this.maxSize = maxSize;
+		array = (Node[]) new Object[maxSize];
+		top = -1;
 	}
 	
-	public Node peek() {
-		return rootNode.getNextNode();
+	public int getMaxSize() {
+		return maxSize;
+	}
+	public void setMaxSize(int maxSize) {
+		this.maxSize = maxSize;
+	}
+	public Node[] getArray() {
+		return array;
+	}
+	public void setArray(Node[] array) {
+		this.array = array;
+	}
+	public int getTop() {
+		return top;
+	}
+	public void setTop(int top) {
+		this.top = top;
 	}
 	
-	public boolean isEmpty() {
-		if(size == 0) {
+	public boolean isFull() {
+		if(top == maxSize-1) {
 			return true;
 		}
 		else {
@@ -55,58 +47,38 @@ public class StackUsingLinkedList {
 		}
 	}
 	
+	public boolean isEmpty() {
+		if(top ==-1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	public void push(Node element) {
+		if(isFull()) {
+			System.out.println("Stack is full");
+			return;
+		}
+		array[++top] = element;
+	}
 	
-	public Node getRootNode() {
-		return rootNode;
+	public Node pop() {
+		if(isEmpty()) {
+			System.out.println("Stack is empty");
+			return null;
+		}
+		Node element = array[top];
+		top--;
+		return element;
 	}
-
-	public void setRootNode(Node rootNode) {
-		this.rootNode = rootNode;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	private class Node {
-		private int data;
-		private Node nextNode;
-		
-		public Node() {}
-		
-		public Node(int data) {
-			super();
-			this.data = data;
+	
+	public Node peek() {
+		if(isEmpty()) {
+			System.out.println("Stack is empty");
+			return null;
 		}
 		
-		public int getData() {
-			return data;
-		}
-		
-		public void setData(int data) {
-			this.data = data;
-		}
-
-		public Node getNextNode() {
-			return nextNode;
-		}
-
-		public void setNextNode(Node nextNode) {
-			this.nextNode = nextNode;
-		}
-
-		public boolean isEmpty () {
-			if(this.getData() == 0) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		
+		return array[top];
 	}
 }

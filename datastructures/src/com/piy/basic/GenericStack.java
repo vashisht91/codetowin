@@ -5,6 +5,13 @@ public class GenericStack <T> {
 	private T[] array;
 	private int top;
 	
+	public GenericStack() {
+		super();
+		this.maxSize = 10;
+		array = (T[]) new Object[maxSize];
+		top = -1;
+	}
+	
 	public GenericStack(int maxSize) {
 		super();
 		this.maxSize = maxSize;

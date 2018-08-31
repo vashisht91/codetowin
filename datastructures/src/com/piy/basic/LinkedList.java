@@ -76,7 +76,7 @@ public class LinkedList {
 		
 		Node searchNode = rootNode;
 		while(searchNode!=null) {
-			if(searchNode	.getData()==data) {
+			if(searchNode.getData()==data) {
 				return searchNode;
 			}
 			searchNode = searchNode.getNextNode();
