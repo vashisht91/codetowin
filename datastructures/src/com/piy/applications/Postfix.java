@@ -1,20 +1,20 @@
 package com.piy.applications;
 
-import com.piy.basic.StackUsingLinkedList;
+import com.piy.basic.Stack;
 
 public class Postfix {
-	StackUsingLinkedList stack;
+	Stack stack;
 
 	public static void main(String[] args) {
-		Postfix postfix = new Postfix();
 		String expr = "1 2 3 4 5 * + 6 * * +";
 		String[] array = expr.split(" ");
+		Postfix postfix = new Postfix(array.length);
 		System.out.println(postfix.evaluate(array));
 		
 	}
 	
-	public Postfix() {
-		stack = new StackUsingLinkedList();
+	public Postfix(int size) {
+		stack = new Stack(size);
 	}
 	
 	public Integer evaluate(String[] array) {
@@ -25,26 +25,26 @@ public class Postfix {
 			switch(array[i]) {
 
 			case "/":
-				opt2 = stack.pop().getData();
-				opt1 = stack.pop().getData();
+				opt2 = stack.pop();
+				opt1 = stack.pop();
 				value = opt1/opt2;
 				stack.push(value);
 				break;
 			case "*":
-				opt2 = stack.pop().getData();
-				opt1 = stack.pop().getData();
+				opt2 = stack.pop();
+				opt1 = stack.pop();
 				value = opt1*opt2;
 				stack.push(value);
 				break;
 			case "+":
-				opt2 = stack.pop().getData();
-				opt1 = stack.pop().getData();
+				opt2 = stack.pop();
+				opt1 = stack.pop();
 				value = opt1+opt2;
 				stack.push(value);
 				break;
 			case "-":
-				opt2 = stack.pop().getData();
-				opt1 = stack.pop().getData();
+				opt2 = stack.pop();
+				opt1 = stack.pop();
 				value = opt1-opt2;
 				stack.push(value);
 				break;
@@ -52,19 +52,19 @@ public class Postfix {
 				stack.push(Integer.parseInt(array[i]));
 			}
 		}
-		if(stack.getSize()==1){
-			return stack.pop().getData();
+		if(stack.getTop()==1){
+			return stack.pop();
 		}
 		else {
 			return null;
 		}
 	}
 
-	public StackUsingLinkedList getStack() {
+	public Stack getStack() {
 		return stack;
 	}
 
-	public void setStack(StackUsingLinkedList stack) {
+	public void setStack(Stack stack) {
 		this.stack = stack;
 	}
 

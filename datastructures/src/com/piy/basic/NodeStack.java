@@ -1,4 +1,4 @@
-package com.jda.mapping;
+package com.piy.basic;
 
 public class NodeStack {
 	private int maxSize;
