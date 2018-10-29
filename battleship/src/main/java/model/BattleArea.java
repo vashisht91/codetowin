@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import main.java.Utils;
+
 public class BattleArea {
 	private int width;
 	private int height;
@@ -69,15 +71,10 @@ public class BattleArea {
 		return true;
 	}
 
+	
+//	TODO Abstract the coordinate related methods into a different class
 	public void setArea() {
-		this.area = new String[this.height][this.width];
-		char yPos = 'A';
-		int xPos = 0;
-		for(int i=yPos;i<yPos+height;i++) {
-			for(int j=xPos;j<xPos+width;j++) {
-				this.area[i-65][j]= (char)i+""+j;
-			}
-		}
+		this.area = Utils.setBattleArea(this.height, this.width);
 	}
 
 	@Override

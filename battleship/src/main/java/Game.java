@@ -14,6 +14,7 @@ public class Game {
 		player1.setTurn(true);
 		player2.setTurn(false);
 		
+//		TODO dont user currentplayer/opponent
 		while(!result) {
 			if(player1.isTurn()) {
 				if(!player1.getUnusedMissiles().isEmpty()) {
@@ -50,6 +51,7 @@ public class Game {
 				}
 			}
 			
+			//TODO put in single if condition (using a private method check if game has ended) 
 			if(currentPlayer.getActiveShipsCount()==0 || opponent.getActiveShipsCount()==0) {
 				this.winner = getWinner(player1, player2);
 				result = true;
@@ -68,7 +70,7 @@ public class Game {
 		String winner = null;
 		int p1ActiveShips = p1.getActiveShipsCount();
 		int p2ActiveShips = p2.getActiveShipsCount();
-		
+//		TODO make it simpler
 		if(p1ActiveShips==0 && p2ActiveShips>0) {
 			winner = p2.getPlayerName();
 		}
@@ -90,8 +92,8 @@ public class Game {
 		this.winner = winner;
 	}
 
-	public int convertStringChartoInt(String val) {
+/*	public int convertStringChartoInt(String val) {
 		char ch = val.charAt(0);
 		return (int) ch - 64;
-	}
+	}*/
 }

@@ -1,6 +1,10 @@
 package main.java.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import main.java.Utils;
 
 public class Ship {
 	private char type;
@@ -8,74 +12,90 @@ public class Ship {
 	private int shipHeight;
 	private String position;
 	private String[] cells;
-	private String shipStatus;
+	private boolean isShipActive;
+	private Map<String, Integer> cellsMap = new HashMap<>();
 
 	public Ship(char type, int shipWidth, int shipHeight, String position) {
 		super();
+		validateShipDetails(type, shipWidth, shipHeight, position);
 		this.type = type;
 		this.shipWidth = shipWidth;
 		this.shipHeight = shipHeight;
 		this.position = position;
 		setCells(shipHeight, shipWidth, position);
-		this.shipStatus = "Active";
+		this.isShipActive = true;
 	}
 	
-	public Ship(char type, int shipWidth, int shipHeight, String position, String[] cells, String shipStatus) {
+	public Ship(char type, int shipWidth, int shipHeight, String position, String[] cells, boolean shipStatus) {
 		super();
 		this.type = type;
 		this.shipWidth = shipWidth;
 		this.shipHeight = shipHeight;
 		this.position = position;
 		this.cells = cells;
-		this.shipStatus = shipStatus;
-		this.shipStatus = "Active";
+		this.isShipActive = shipStatus;
+		this.isShipActive = true;
 	}
-
-	public boolean destroyCell(String pos) {
-		boolean cellHit = false;
-		
-		for(int i=0 ; i<cells.length; i++) {			
-			if(cells[i].contains(pos)) {
-				if(cells[i].length()>2 && cells[i].endsWith("D")) {
-					break;
-				}
-				if(type=='Q') {
-					if(cells[i].endsWith("H")) {
-						cells[i]+="D";
-						cellHit = true;
-					}
-					else {
-						cells[i]+="H";
-						cellHit = true;
-					}
-				
-				}
-				else {
-					cells[i]+="D";
-					cellHit = true;
-				}
-				break;
-			}		
+	
+	public Ship validateShipDetails(char type, int shipWidth, int shipHeight, String position) {
+		if(type!='Q' && type!='P') {
+			System.out.println("Type of ship should be = {‘P’, ‘Q’}");
+			System.exit(0);
+		}
+		if(shipWidth < 1 || shipWidth > 9) {
+			System.out.println("1 <= Width of battleship should be <= Width of Battle area");
+			System.exit(0);
+		}
+		if(shipHeight < 1 || shipHeight > (int) (battleAreaIP[1].charAt(0) -64)) {
+			System.out.println("1 <= Height of battleship should be <= Height of Battle area");
+			System.exit(0);
 		}
 		
+		return new Ship(type, shipWidth, shipHeight, position);		
+	}
+	
+	public boolean destroyCell(String pos) {
+		boolean cellHit = false;
+		int hitCount = 0;
+		if(cellsMap.get(pos)!=null) {
+			hitCount= cellsMap.get(pos);
+				if(!isCellDestroyed(hitCount)) {
+					cellsMap.put(pos, ++hitCount);
+					cellHit = true;
+				}							
+				
+//				TODO Remove ifs from the method and change the way hits are being calculated 
+//				TODO incorporate another ship type 'R' which takes 3 hits
+
+//			}		
+		}
+		
+//		TODO Improve the logic
 		boolean destroyed = true;
-		for(String cell : cells) {
-			if(cell.length()>2 && cell.endsWith("D")) {
-				continue;
-			}
-			else {
+				
+		for(int count : cellsMap.values()) {
+			if(!isCellDestroyed(count)) {
 				destroyed = false;
 				break;
 			}
 		}
 		
-		if(destroyed) {
-			this.shipStatus = "Destroyed";
-		}
-		
+//		TODO use boolean instead of string for shipstatus
+		this.isShipActive = destroyed;
 		return cellHit;
 	}
 
+
+	public boolean isCellDestroyed(int count) {
+		if(count==1 && this.getType()=='P')
+			return true;
+		if(count==2 && this.getType()=='Q')
+			return true;
+		if(count==3 && this.getType()=='R')
+			return true;
+		return false;
+	}
+	
 	public char getType() {
 		return type;
 	}
@@ -110,15 +130,10 @@ public class Ship {
 	}
 
 //	Cell values can be like A1 or A1H (Hit once) or A1D/A1HD (Cell Destroyed) 
-	public void setCells(int height, int width, String pos) {
-		this.cells = new String[height*width];
-		char yPos = pos.charAt(0);
-		int xPos = Integer.parseInt(pos.substring(1, pos.length()));
-		int count = 0;
-		for(int i=yPos;i<yPos+height;i++) {
-			for(int j=xPos;j<xPos+width;j++,count++) {
-				cells[count]= (char)i+""+j;
-			}
+	public void setCells(int height, int width, String pos) {		
+		this.cells = Utils.setCells(height, width, pos);
+		for(String cell : this.cells) {
+			cellsMap.put(cell, 0);
 		}
 	}
 	
@@ -127,19 +142,27 @@ public class Ship {
 		return cells;
 	}
 	
-	public String getShipStatus() {
-		return shipStatus;
+/*	public String getShipStatus() {
+		return isShipActive;
 	}
 
 //	Active or Destroyed
 	public void setShipStatus(String shipStatus) {
-		this.shipStatus = shipStatus;
+		this.isShipActive = shipStatus;
 	}
-	
+	*/
+	public boolean isShipActive() {
+		return isShipActive;
+	}
+
+	public void setShipActive(boolean isShipActive) {
+		this.isShipActive = isShipActive;
+	}
+
 	@Override
 	public String toString() {
 		return "\nShip [\n type=" + type + ",\n shipWidth=" + shipWidth + ",\n shipHeight=" + shipHeight + ",\n position="
-				+ position + ",\n cells=" + Arrays.toString(cells) + ",\n shipStatus=" + shipStatus 
+				+ position + ",\n cells=" + Arrays.toString(cells) + ",\n shipStatus=" + isShipActive 
 				+ "]";
 	}
 

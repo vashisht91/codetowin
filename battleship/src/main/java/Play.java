@@ -1,8 +1,10 @@
-package main.java.model;
+package main.java;
 
 import java.util.Scanner;
 
-import main.java.Game;
+import main.java.model.BattleArea;
+import main.java.model.Player;
+import main.java.model.Ship;
 
 public class Play {
 	static String[] battleAreaIP;
@@ -29,12 +31,15 @@ public class Play {
 		String missiles2 = scanner.nextLine();
 		scanner.close();
 		
-		BattleArea battleArea1 = new BattleArea(Integer.parseInt(battleAreaIP[0]), game.convertStringChartoInt(battleAreaIP[1]));
-		BattleArea battleArea2 = new BattleArea(Integer.parseInt(battleAreaIP[0]), game.convertStringChartoInt(battleAreaIP[1]));
+//		TODO put these into separate method
+		BattleArea battleArea1 = new BattleArea(Integer.parseInt(battleAreaIP[0]), Utils.convertStringChartoInt(battleAreaIP[1]));
+		BattleArea battleArea2 = new BattleArea(Integer.parseInt(battleAreaIP[0]), Utils.convertStringChartoInt(battleAreaIP[1]));
 		
 		player1 = new Player("Player-1", battleArea1);
 		player2 = new Player("Player-2", battleArea2);
 		
+		
+//		TODO do it in the first loop itself
 		for(int i=0 ; i<dimensions.length ; i++) {
 			String[] shipDetails = dimensions[i].split(" ");
 			Ship ship1 = readShipDetails(shipDetails[0].charAt(0), Integer.parseInt(shipDetails[1]), Integer.parseInt(shipDetails[2]), shipDetails[3]);
@@ -85,6 +90,8 @@ public class Play {
 		return 0;
 	}
 	
+	
+//	TODO keep specific read methods in respective classes
 	public static Ship readShipDetails(char type, int shipWidth, int shipHeight, String position) {
 		if(type!='Q' && type!='P') {
 			System.out.println("Type of ship should be = {‘P’, ‘Q’}");

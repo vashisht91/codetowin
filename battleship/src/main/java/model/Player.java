@@ -129,10 +129,12 @@ public class Player {
 		return hit;
 	}
 	
+	
+//	TODO Simplify it
 	public int getActiveShipsCount() {
 		int count = 0;
 		for(Ship ship : ships) {
-			if("Active".equalsIgnoreCase(ship.getShipStatus())) {
+			if(ship.isShipActive()) {
 				count++;
 			}
 		}
